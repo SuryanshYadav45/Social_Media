@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../Components/Navbar";
-import { useParams } from "react-router-dom";
-import { useSelector, useStore } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import { HiOutlinePhotograph } from "react-icons/hi";
 import { SlCamera } from "react-icons/sl";
 import { jwtDecode } from "jwt-decode";
@@ -9,8 +9,11 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable, } from "firebase
 import { RiCloseLargeFill } from "react-icons/ri";
 import { app } from "../firebase";
 import { deployUrl } from "../deployment";
+import { signOut } from '../redux/user/userSlice'
 
 const User = () => {
+    const dispatch = useDispatch();
+    const navigate=useNavigate()
     const { id } = useParams();
     const fileInputRef = useRef(null);
     const [currentUser, setcurrentUser] = useState();
@@ -19,7 +22,7 @@ const User = () => {
     const [filePreview, setFilePreview] = useState(null);
     const user = useSelector((state) => state.user.user);
     const decodeUser = jwtDecode(user.usertoken);
-    console.log(decodeUser);
+    
 
 
     const [userData, setuserData] = useState([]);
@@ -40,7 +43,7 @@ const User = () => {
 
                 if (response.status === 200) {
                     const data = await response.json();
-                    console.log(data);
+                    
                     setuserData(data.userinfo);
                     setuserPost(data.userpost);
                 }
@@ -56,6 +59,11 @@ const User = () => {
         fileInputRef.current.click();
     };
 
+    const logout = async () => {
+        dispatch(signOut());
+        navigate('/login')
+      }
+
     const storeImage = async (file) => {
         return new Promise((resolve, reject) => {
             const storage = getStorage(app);
@@ -66,7 +74,7 @@ const User = () => {
                 'state_changed',
                 (snapshot) => {
                     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    console.log(`Upload is ${progress}% done`);
+                    // console.log(`Upload is ${progress}% done`);
                 },
                 (error) => {
                     reject(error);
@@ -88,8 +96,8 @@ const User = () => {
             setFile(selectedFile);
             const fileURL = URL.createObjectURL(selectedFile);
             setFilePreview(fileURL);
-            console.log(fileURL);
-            console.log(`Selected file: ${selectedFile.name}`);
+            // console.log(fileURL);
+            // console.log(`Selected file: ${selectedFile.name}`);
         }
     };
 
@@ -113,7 +121,7 @@ const User = () => {
             })
             if(response.status===201)
             {
-                console.log("photo updated successfully")
+                // console.log("photo updated successfully")
                 setupdateProfile(false)
                 window.location.reload()
             }
@@ -162,6 +170,7 @@ const User = () => {
                             </p>
                         </div>
                         <h3>{userData.fullname}</h3>
+                        <button onClick={logout} className='bg-[#363636] w-[130px] rounded-lg h-[30px] mt-3 text-white'>Logout</button>
                     </div>
                 </div>
                 <div className="w-[80%] h-[1px] bg-[#2c2c2d] mx-auto mt-5"></div>
@@ -199,7 +208,7 @@ const User = () => {
                             alt=""
                         />
                         <div className="ml-2 mt-1">
-                            <p className="text-white">suryansh</p>
+                            <p className="text-white">{decodeUser?.username}</p>
                             <button onClick={handleButtonClick} className="text-[#0095F6] cursor-pointer font-semibold">
                                 Change photo
                             </button>
