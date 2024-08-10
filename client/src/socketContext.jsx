@@ -37,7 +37,7 @@ export const SocketProvider = ({ children }) => {
         if (decodeUser) {
             
             
-            const newSocket = io('ws://localhost:4000'); // replace with your server URL
+            const newSocket = io('ws://social-media-d1kh.onrender.com'); // replace with your server URL
             setSocket(newSocket);
             console.log("Socket info",newSocket)
             
