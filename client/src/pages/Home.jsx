@@ -50,7 +50,7 @@ const Home = () => {
     }
 
     const fetchpost = async () => {
-      const response = await fetch("http://localhost:4000/post/getallpost", {
+      const response = await fetch("https://social-media-d1kh.onrender.com/post/getallpost", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
