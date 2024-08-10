@@ -17,14 +17,14 @@ const ChatProfile = ({ data }) => {
       className="bg-black w-full text-white flex mt-2 h-[70px] p-2 cursor-pointer"
       onClick={() => navigate(`/direct/${data?._id}`)}
     >
-      <div className="w-[60px] h-[60px]">
+      <div className="w-[40px] h-[40px] smlg:w-[60px] smlg:h-[60px]">
         <img
           className="w-full h-full rounded-full"
           src={data?.photoUrl}
           alt=""
         />
       </div>
-      <div className="ml-[10px]">
+      <div className="ml-[10px] hidden smlg:block">
         <h6>{data?.username}</h6>
         <p>{message }</p>
       </div>

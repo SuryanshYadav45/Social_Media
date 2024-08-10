@@ -109,7 +109,7 @@ const CreatePost = () => {
 
     return (
         <div className=" flex bg-black ">
-            <div className="w-full bg-gray-100 smlg:w-[10%] fixed bottom-0 lap:w-[18%] ">
+            <div className="w-full z-50 bg-gray-100 smlg:w-[10%] fixed bottom-0 lap:w-[18%] ">
                 <Navbar />
             </div>
 

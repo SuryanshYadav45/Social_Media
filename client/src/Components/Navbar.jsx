@@ -45,7 +45,7 @@ const Navbar = ({ user }) => {
 
     return (
         <>
-            <div className='w-full bg-black min-h-[100vh] hidden smlg:block text-white border-r-0.5 border-[#2c2c2d]'>
+            <div className='w-full bg-black min-h-[100vh] hidden smlg:block text-white  border-r-0.5 border-[#2c2c2d]'>
                 <h3 className='pt-10 ml-7 text-[30px] italic hidden lap:block'>Instagram</h3>
                 <h3 className='pt-10 ml-7 text-[30px] italic lap:hidden'>I</h3>
                 <div className=' h-[50px] flex items-center ml-3 mt-10 cursor-pointer hover:bg-[#161617] rounded-md' onClick={()=>navigate('/')}>
@@ -81,26 +81,26 @@ const Navbar = ({ user }) => {
 
             <div className='w-full bg-black h-[50px] smlg:hidden text-white border-t-0.5 border-[#2c2c2d] flex justify-evenly items-center'>
 
-                <div className=' h-[40px] flex items-center '>
+                <div className=' h-[40px] flex items-center ' onClick={()=>navigate('/')}>
                     <GoHomeFill className='' size={32} />
                 </div>
 
                 <div className=' h-[40px] flex items-center '>
                     <FiSearch className='' size={32} />
                 </div>
-                <div className=' h-[40px] flex items-center '>
+                <div className=' h-[40px] flex items-center ' onClick={()=>navigate('/inbox')}>
                     <FaFacebookMessenger className='' size={32} />
                 </div>
-                <div className=' h-[40px] flex items-center  '>
+                <div className=' h-[40px] flex items-center  ' onClick={()=>navigate('/notification')}>
                     <RiNotification2Fill className='' size={32}  />
                 </div>
-                <div className=' h-[40px] flex items-center '>
+                <div className=' h-[40px] flex items-center ' onClick={() => navigate('/createpost')}>
                     <MdAddCircle className='' size={32} />
                 </div>
-                <div className=' h-[40px] flex items-center '>
-                    <div className='w-[50px] h-[50px]  overflow-hidden'>
+                <div className=' h-[40px] flex items-center ' onClick={()=>navigate(`/user/${currentUser?.id}`)}>
+                    <div className='w-[40px] h-[40px]  overflow-hidden'>
 
-                        <img className='rounded-full w-full h-full object-cover' src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Profile" />
+                        <img className='rounded-full w-full h-full object-cover' src={currentUser?.photoUrl} alt="Profile" />
 
                     </div>
                 </div>

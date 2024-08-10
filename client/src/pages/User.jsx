@@ -141,7 +141,7 @@ const User = () => {
                             <span className="text-[25px]">{userData?.username}</span>
 
                             {userData._id === decodeUser.id ? (
-                                <button className="bg-[#363636] rounded-md mt-[1px] text-white w-[80px] h-[35px]" onClick={()=>setupdateProfile(true)}>
+                                <button className="bg-[#363636] rounded-md ml-2 mt-[1px] text-white w-[80px] h-[35px]" onClick={()=>setupdateProfile(true)}>
                                     Edit Profile
                                 </button>
                             ) : (

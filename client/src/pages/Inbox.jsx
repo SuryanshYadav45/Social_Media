@@ -73,18 +73,18 @@ const Inbox = () => {
 
   return (
     <div className=" flex bg-black ">
-      <div className="w-full bg-gray-100 smlg:w-[10%] fixed bottom-0 lap:w-[15%] ">
+      <div className="w-full bg-gray-100 smlg:w-[10%] z-50 fixed bottom-0 lap:w-[15%] ">
         <Navbar />
       </div>
 
-      <div className="relative w-full h-screen  text-white bg-black smlg:w-[90%] smlg:ml-[10%] lap:w-[25%] lap:ml-[15%] overflow-y-scroll">
+      <div className="relative w-[25%] h-screen  text-white bg-black smlg:w-[90%] smlg:ml-[10%] lap:w-[25%] lap:ml-[15%] overflow-y-scroll">
         {Account?.map((account) => (
           <ChatProfile key={account._id} data={account} />
         ))}
       </div>
       <div className="relative w-full h-screen flex flex-col justify-center items-center text-white bg-black smlg:w-[90%] lap:w-[60%]">
         {searchChat ? (
-          <div className=" w-[500px] p-5 rounded-lg text-white bg-[#19191A]">
+          <div className=" w-[100%] smlg:w-[500px] p-5 rounded-lg text-white bg-[#19191A]">
             <div className="relative">
               <h3 className="text-[25px] text-center">New message</h3>
               <IoClose
