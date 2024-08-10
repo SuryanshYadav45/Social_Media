@@ -226,7 +226,8 @@ const User = () => {
                         </div>
                     </div>
 
-                    <button disabled={uploadProgress !== null}  className="bg-[#0095F6] w-[120px] h-[35px] text-white mx-auto mt-3 rounded" onClick={handleUpdate}>{uploadProgress !== null ? `Uploading ${uploadProgress}%` : 'Submit'}</button>
+                    <button disabled={uploadProgress !== null}  className="bg-[#0095F6] w-auto p-5 flex justify-center
+                    items-center h-[35px] text-white mx-auto mt-3 rounded" onClick={handleUpdate}>{uploadProgress !== null ? `Uploading ${uploadProgress}%` : 'Submit'}</button>
                 </div>
 
             </div>}
