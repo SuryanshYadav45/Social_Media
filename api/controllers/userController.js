@@ -98,7 +98,7 @@ const sendFriendRequest = async (req, res) => {
 const getAllUsers = async (req, res) => {
   try {
     const user = await UserModel.find({
-      friends: { $nin: [req.user.id] },
+      friends: { $nin: [req.user.id] },isVerified: true
     }).select("username photoUrl fullname");
     const data = user.filter((user) => user._id != req.user.id);
     res.status(200).json(data);
