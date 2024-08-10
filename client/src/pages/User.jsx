@@ -9,7 +9,7 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable, } from "firebase
 import { RiCloseLargeFill } from "react-icons/ri";
 import { app } from "../firebase";
 import { deployUrl } from "../deployment";
-import { signOut } from '../redux/user/userSlice'
+import { signInSuccess, signOut } from '../redux/user/userSlice'
 
 const User = () => {
     const dispatch = useDispatch();
@@ -22,6 +22,7 @@ const User = () => {
     const [filePreview, setFilePreview] = useState(null);
     const user = useSelector((state) => state.user.user);
     const decodeUser = jwtDecode(user.usertoken);
+    const [uploadProgress, setUploadProgress] = useState(null);
     
 
 
@@ -73,7 +74,8 @@ const User = () => {
             uploadTask.on(
                 'state_changed',
                 (snapshot) => {
-                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);;
+                    setUploadProgress(progress);
                     // console.log(`Upload is ${progress}% done`);
                 },
                 (error) => {
@@ -123,7 +125,10 @@ const User = () => {
             {
                 // console.log("photo updated successfully")
                 setupdateProfile(false)
-                window.location.reload()
+                const data = await response.json()
+                dispatch(signInSuccess(data))
+           
+                 window.location.reload()
             }
         } catch (error) {
             console.log(error)
@@ -221,7 +226,7 @@ const User = () => {
                         </div>
                     </div>
 
-                    <button className="bg-[#0095F6] w-[120px] h-[35px] text-white mx-auto mt-3 rounded" onClick={handleUpdate}>Submit</button>
+                    <button disabled={uploadProgress !== null}  className="bg-[#0095F6] w-[120px] h-[35px] text-white mx-auto mt-3 rounded" onClick={handleUpdate}>{uploadProgress !== null ? `Uploading ${uploadProgress}%` : 'Submit'}</button>
                 </div>
 
             </div>}

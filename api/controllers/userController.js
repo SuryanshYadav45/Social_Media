@@ -7,6 +7,8 @@ const {
 } = require("../helper/notification.js");
 const FriendRequestModel = require("../model/FriendRequestModel");
 const { getIo } = require("../socket.js");
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 const addFriend = async (req, res) => {
   try {
@@ -168,7 +170,13 @@ const updateUser = async (req, res) => {
     }
     user.photoUrl = photoUrl;
     await user.save();
-    res.status(201).json({ message: "User updated successfully" });
+    const token = jwt.sign(
+      { id: user._id, username: user.username,fullname:user.fullname, photoUrl: user.photoUrl, email: user.email },
+      process.env.TOKEN_SECRET,
+      { expiresIn: '1h' }
+    );
+    const TokenExp = new Date(Date.now() + 50 * 60 * 1000);
+    res.status(201).json({"usertoken":token,"expiration":TokenExp});
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal server error" });
