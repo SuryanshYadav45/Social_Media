@@ -6,6 +6,7 @@ import { deployUrl } from '../deployment';
 
 const Signup = () => {
     const[code,setCode]=useState("")
+    const [showPassword, setShowPassword] = useState(false);
     const navigate=useNavigate();
     const [formdata, setFormdata] = useState({
         username: "",
@@ -69,15 +70,17 @@ const Signup = () => {
         }));
       };
 
+
     const handleSignup=async()=>
         {
             try {
+                if(File){
                 const imageUrl=await storeImage(File)
                 setFormdata((prevData)=>({
                     ...prevData,
                     "photoUrl":imageUrl
                 }))
-                console.log(formdata)
+            }
                 const response= await fetch(`${deployUrl}/auth/signup`,
                     {
                         method:'POST',
@@ -98,6 +101,11 @@ const Signup = () => {
             }
         }
 
+        const handleToggle = (e) => {
+            setShowPassword(e.target.checked);
+          };
+        
+          
         const handlecode=async()=>
             {
                try {
@@ -148,7 +156,9 @@ const Signup = () => {
                         <input type="email" placeholder='Email' name='email' onChange={handlechange} className='w-[99%] mt-4 mb-2 p-2 h-[40px] outline-none border' />
                         <input type="text" placeholder='Full Name' name='fullname' onChange={handlechange} className='w-[99%] mt-4 mb-2 p-2 h-[40px] outline-none border' />
                         <input type="text" placeholder='Username' name='username' onChange={handlechange} className='w-[99%] mt-4 mb-2 p-2 h-[40px] outline-none border' />
-                        <input type="password" placeholder='Password' name='password' onChange={handlechange} className='w-[99%] mt-2 p-2 h-[40px] outline-none border' />
+                        <input type={showPassword ? 'text' : 'password'} placeholder='Password' name='password' onChange={handlechange} className='w-[99%] mt-2 p-2 h-[40px] outline-none border' />
+                        <input type="checkbox" checked={showPassword}
+          onChange={handleToggle} className='mt-4' /> Show Password
                         <button className='w-full bg-[#0095F6] text-white h-[40px] rounded-md mt-5' onClick={handleSignup}>Sign up</button>
 
 
