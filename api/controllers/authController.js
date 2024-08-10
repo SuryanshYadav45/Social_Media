@@ -13,7 +13,7 @@ const login = async (req, res) => {
             }
         const user= await UserModel.findOne({username})
         if(!user){
-           return res.status(404).json({message:"no user found"})
+           return res.status(404).json({message:"User not found"})
         } 
         if(!user.isVerified)
             {

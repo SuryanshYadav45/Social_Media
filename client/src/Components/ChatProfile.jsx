@@ -4,9 +4,16 @@ import { useNavigate } from "react-router-dom";
 const ChatProfile = ({ data }) => {
 //   console.log(data.latestMessage.content);
   const [message, setmessage] = useState("");
+  const truncateMessage = (message, maxWords) => {
+    const words = message.split(' ');
+    if (words.length <= maxWords) {
+        return message; // Return the message as is if it's within the limit
+    }
+    return words.slice(0, maxWords).join(' ') + ' ...'; // Truncate and append ellipsis
+};
   useEffect(() => {
     if (data?.latestMessage?.content != null) {
-      setmessage(data.latestMessage.content);
+      setmessage(truncateMessage(data.latestMessage.content,7));
     } else {
       setmessage("Start Conversation!!");
     }
@@ -26,7 +33,7 @@ const ChatProfile = ({ data }) => {
       </div>
       <div className="ml-[10px] hidden smlg:block">
         <h6>{data?.username}</h6>
-        <p>{message }</p>
+        <p className="">{message}</p>
       </div>
     </div>
   );

@@ -171,7 +171,7 @@ const Chat = () => {
           ref={messageListRef}
         >
           <MessageList
-            className="message-list relative !bg-transparent"
+            className="message-list relative text-black "
             lockable={true}
             toBottomHeight={"100%"}
             dataSource={messages}

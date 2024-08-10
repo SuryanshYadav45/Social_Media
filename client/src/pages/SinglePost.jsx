@@ -138,14 +138,14 @@ const SinglePost = () => {
         <Navbar />
       </div>
 
-      <div className="relative w-full h-screen flex justify-center items-center  text-white bg-black smlg:w-[90%] smlg:ml-[10%] lap:w-[82%] lap:ml-[18%]">
+      <div className="relative w-full h-screen bg-[#19191A] smlg:flex smlg:justify-center smlg:items-center  text-white smlg:bg-black smlg:w-[90%] smlg:ml-[10%] lap:w-[82%] lap:ml-[18%]">
         <div className="absolute inset-0 bg-black opacity-50"></div>
        
-        <div className="relative flex-col mt-[-70px]  bg-[#19191A] smlg:flex-row flex w-[80%] h-[85vh] items-center  z-10 border border-[#282626]">
-          <div className="flex-[3] w-full h-[30%] smlg:h-full">
-            <img src={post?.imageurls[0]} className="w-full h-full" alt="" />
+        <div className="relative flex-col  w-full h-[94%]  bg-[#19191A] smlg:flex-row flex smlg:w-[80%] smlg:h-[85vh] items-center  z-10 border border-[#282626]">
+          <div className="flex-[2] w-full  relative smlg:h-full">
+            <img src={post?.imageurls[0]} className="w-full h-[300px] smlg:h-full" alt="" />
           </div>
-          <div className="flex-[2] w-full relative  h-[70%] smlg:h-full">
+          <div className="flex-[3] w-full relative smlg:h-full">
             <div className="mt-2 flex items-center border-b relative border-[#282626] p-2">
               <img
                 className="rounded-full ml-3  object-cover w-[45px] h-[45px]"
@@ -157,7 +157,7 @@ const SinglePost = () => {
                 follow
               </button>
             </div>
-            <div className="overflow-y-scroll h-[62%] smlg:h-[68%]">
+            <div className="overflow-y-scroll h-[270px] smlg:h-[68%]">
               {postComment?.map((comment) => (
                 <CommentBar key={comment._id} data={comment} />
               ))}
@@ -181,7 +181,7 @@ const SinglePost = () => {
                 <LuSendHorizonal size={30} className="ml-2" />
               </div>
               <p>{likecount} likes</p>
-              <div className="flex items-center mt-1">
+              <div className="flex items-center mb-2">
                 <img
                   className="w-[40px] h-[40px] rounded-full mr-2 "
                   src={decoded?.photoUrl}
@@ -189,7 +189,7 @@ const SinglePost = () => {
                 />
 
                 <input
-                  className="w-[80%] mt-1 text-white bg-transparent outline-none"
+                  className="w-[80%] mt-1  text-white bg-transparent outline-none"
                   type="text"
                   value={comment}
                   onChange={(e) => setcomment(e.target.value)}
