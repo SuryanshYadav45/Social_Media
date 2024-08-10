@@ -2,7 +2,7 @@ import { jwtDecode } from 'jwt-decode'
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { json } from 'react-router-dom'
-
+import { deployUrl } from '../deployment'
 const AddUser = ({data}) => {
 
   const user = useSelector((state) => state.user.user)
@@ -14,7 +14,7 @@ const AddUser = ({data}) => {
   {
     console.log(data)
     try {
-      const response=await fetch('http://localhost:4000/user/sendrequest',{
+      const response=await fetch(`${deployUrl}/user/sendrequest`,{
         method:"POST",
         headers: {
           "Content-Type": "application/json",

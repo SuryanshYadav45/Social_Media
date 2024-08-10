@@ -7,6 +7,7 @@ import { RiCloseLargeFill } from "react-icons/ri";
 import { LuHeart, LuSendHorizonal } from "react-icons/lu";
 import { FaHeart, FaRegComment } from "react-icons/fa";
 import { jwtDecode } from "jwt-decode";
+import { deployUrl } from "../deployment";
 
 const SinglePost = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const SinglePost = () => {
     const fetchpost = async () => {
       try {
         const response = await fetch(
-          `http://localhost:4000/post/getpost/${postid}`,
+          `${deployUrl}/post/getpost/${postid}`,
           {
             method: "GET",
             headers: {
@@ -65,7 +66,7 @@ const SinglePost = () => {
   const likePost = async () => {
     try {
         
-        const response = await fetch('http://localhost:4000/post/likepost', {
+        const response = await fetch(`${deployUrl}/post/likepost`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -87,7 +88,7 @@ const SinglePost = () => {
 const dislikePost=async()=>
   {
       try {
-          const response = await fetch('http://localhost:4000/post/dislike', {
+          const response = await fetch(`${deployUrl}/post/dislike`, {
               method: "POST",
               headers: {
                   "Content-Type": "application/json",
@@ -109,7 +110,7 @@ const dislikePost=async()=>
 const createComment=async()=>
   {
       try {
-          const response=await fetch("http://localhost:4000/post/comment",{
+          const response=await fetch(`${deployUrl}/post/comment`,{
               method:"POST",
               headers: {
                   "Content-Type": "application/json",

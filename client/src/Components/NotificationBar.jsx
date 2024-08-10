@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { deployUrl } from '../deployment'
 
 const NotificationBar = ({data}) => {
   const user=useSelector((state)=>state.user.user)
@@ -9,7 +10,7 @@ const NotificationBar = ({data}) => {
   const acceptRequest= async()=>
   {
     try {
-      const response=await fetch(`http://localhost:4000/user/adduser/${data.senderid}/${data._id}`,{
+      const response=await fetch(`${deployUrl}/user/adduser/${data.senderid}/${data._id}`,{
         method:"GET",
         headers: {
           "Content-Type": "application/json",

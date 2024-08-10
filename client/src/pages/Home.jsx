@@ -7,9 +7,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { jwtDecode } from "jwt-decode";
 import { signOut } from '../redux/user/userSlice'
 import { Navigate, useNavigate } from 'react-router-dom'
-
+import { deployUrl } from '../deployment'
 
 const Home = () => {
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [currentUser, setcurrentUser] = useState();
@@ -30,7 +31,7 @@ const Home = () => {
 
 
     const fetchUser = async () => {
-      const response = await fetch("http://localhost:4000/user/getusers", {
+      const response = await fetch(`${deployUrl}/user/getusers`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -50,7 +51,7 @@ const Home = () => {
     }
 
     const fetchpost = async () => {
-      const response = await fetch("https://social-media-d1kh.onrender.com/post/getallpost", {
+      const response = await fetch(`${deployUrl}/post/getallpost`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

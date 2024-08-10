@@ -7,6 +7,7 @@ import { signOut } from '../redux/user/userSlice'
 import NotificationBar from '../Components/NotificationBar'
 import { useSocket } from '../socketContext'
 import { useNavigate } from 'react-router-dom'
+import { deployUrl } from '../deployment'
 
 const Notification = () => {
   const socket=useSocket();
@@ -55,7 +56,7 @@ const Notification = () => {
     
         const fetchUser=async()=>
         {
-          const response=await fetch("http://localhost:4000/user/getusers",{
+          const response=await fetch(`${deployUrl}/user/getusers`,{
             method:"GET",
             headers:{
               "Content-Type": "application/json",
@@ -75,7 +76,7 @@ const Notification = () => {
         
     const fetchNotification=async()=>
       {
-        const response=await fetch("http://localhost:4000/notification/getnotification",{
+        const response=await fetch(`${deployUrl}/notification/getnotification`,{
           method:"GET",
           headers:{
             "Content-Type": "application/json",

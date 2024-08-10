@@ -5,6 +5,7 @@ import { IoClose } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import { jwtDecode } from "jwt-decode";
 import { Navigate, useNavigate, useNavigation } from "react-router-dom";
+import { deployUrl } from "../deployment";
 const Inbox = () => {
   const user = useSelector((state) => state.user.user);
   const [searchChat, setsearchChat] = useState(false);
@@ -21,7 +22,7 @@ const Inbox = () => {
     }
 
     const fetchUser = async () => {
-      const response = await fetch("http://localhost:4000/user/getFriend", {
+      const response = await fetch(`${deployUrl}/user/getFriend`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -43,7 +44,7 @@ const Inbox = () => {
       if (searchTerm) {
         try {
           const response = await fetch(
-            `http://localhost:4000/user/searchuser?query=${searchTerm}`,
+            `${deployUrl}/user/searchuser?query=${searchTerm}`,
             {
               method: "GET",
               headers: {

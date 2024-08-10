@@ -8,6 +8,7 @@ import { jwtDecode } from "jwt-decode";
 import { getDownloadURL, getStorage, ref, uploadBytesResumable, } from "firebase/storage"
 import { RiCloseLargeFill } from "react-icons/ri";
 import { app } from "../firebase";
+import { deployUrl } from "../deployment";
 
 const User = () => {
     const { id } = useParams();
@@ -27,7 +28,7 @@ const User = () => {
         const fetchuser = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:4000/user/userinfo/${id}`,
+                    `${deployUrl}/user/userinfo/${id}`,
                     {
                         method: "GET",
                         headers: {
@@ -101,7 +102,7 @@ const User = () => {
             const photoUrl={
                 "photoUrl":file
             }
-            const response=await fetch("http://localhost:4000/user/updateuser",{
+            const response=await fetch(`${deployUrl}/user/updateuser`,{
                 method:"POST",
                 headers:{
                     'Content-Type':'application/json',

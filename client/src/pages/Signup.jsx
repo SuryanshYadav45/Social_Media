@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable, } from "firebase/storage"
 import { app } from '../firebase';
+import { deployUrl } from '../deployment';
 
 const Signup = () => {
     const[code,setCode]=useState("")
@@ -77,7 +78,7 @@ const Signup = () => {
                     "photoUrl":imageUrl
                 }))
                 console.log(formdata)
-                const response= await fetch("http://localhost:4000/auth/signup",
+                const response= await fetch(`${deployUrl}/auth/signup`,
                     {
                         method:'POST',
                         headers:{
@@ -100,7 +101,7 @@ const Signup = () => {
         const handlecode=async()=>
             {
                try {
-                const response=await fetch('http://localhost:4000/auth/verifyemail',
+                const response=await fetch(`${deployUrl}/auth/verifyemail`,
                     {
                         method:"POST",
                         headers:{

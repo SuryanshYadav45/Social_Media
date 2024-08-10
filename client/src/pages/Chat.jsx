@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSocket } from "../socketContext";
 import { HiOutlineVideoCamera } from "react-icons/hi2";
+import { deployUrl } from "../deployment";
 
 const Chat = () => {
   let { id } = useParams();
@@ -28,7 +29,7 @@ const Chat = () => {
     }
 
     const fetchUser = async () => {
-      const response = await fetch("http://localhost:4000/user/getFriend", {
+      const response = await fetch(`${deployUrl}/user/getFriend`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -46,7 +47,7 @@ const Chat = () => {
     const fetchchat = async () => {
       try {
         const response = await fetch(
-          `http://localhost:4000/chat/message/${decodeUser?.id}/${id}`,
+          `${deployUrl}/chat/message/${decodeUser?.id}/${id}`,
           {
             method: "GET",
             headers: {
@@ -76,7 +77,7 @@ const Chat = () => {
      {
       try {
         const response = await fetch(
-          `http://localhost:4000/user/userinfo/${id}`,
+          `${deployUrl}/user/userinfo/${id}`,
           {
             method: "GET",
             headers: {

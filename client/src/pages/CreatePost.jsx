@@ -90,7 +90,7 @@ const CreatePost = () => {
 
     const createPost = async () => {
         try {
-            const response= await fetch('http://localhost:4000/post/createpost',{
+            const response= await fetch(`${deployUrl}/post/createpost`,{
                 method:"POST",
                 headers:{
                     "Content-Type": "application/json",

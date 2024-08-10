@@ -9,6 +9,7 @@ import { FaHeart } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import {formatTimeAgo} from "../helper/converttime.js"
 import { FaBookmark } from "react-icons/fa";
+import { deployUrl } from '../deployment.js';
 const Post = ({ data, currentuser }) => {
     const [isLikedByCurrentUser, setIsLikedByCurrentUser] = useState(data.likes.includes(currentuser?.id));
     const [comment, setcomment] = useState("")
@@ -26,7 +27,7 @@ const Post = ({ data, currentuser }) => {
     const likePost = async () => {
         try {
             
-            const response = await fetch('http://localhost:4000/post/likepost', {
+            const response = await fetch(`${deployUrl}/post/likepost`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -47,7 +48,7 @@ const Post = ({ data, currentuser }) => {
     const dislikePost=async()=>
     {
         try {
-            const response = await fetch('http://localhost:4000/post/dislike', {
+            const response = await fetch(`${deployUrl}/post/dislike`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -69,7 +70,7 @@ const Post = ({ data, currentuser }) => {
     const createComment=async()=>
     {
         try {
-            const response=await fetch("http://localhost:4000/post/comment",{
+            const response=await fetch(`${deployUrl}/post/comment`,{
                 method:"POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -96,7 +97,7 @@ const Post = ({ data, currentuser }) => {
     {
         try {
             setsavepost(true)
-            const response =await fetch(`http://localhost:4000/post/savepost/${data._id}`,{
+            const response =await fetch(`${deployUrl}/post/savepost/${data._id}`,{
                 method:"GET",
                 headers:{
                     "Content-Type":"application/json",
@@ -113,7 +114,7 @@ const Post = ({ data, currentuser }) => {
     {
         try {
             setsavepost(false)
-            const response =await fetch(`http://localhost:4000/post/unsavepost/${data._id}`,{
+            const response =await fetch(`${deployUrl}/post/unsavepost/${data._id}`,{
                 method:"GET",
                 headers:{
                     "Content-Type":"application/json",

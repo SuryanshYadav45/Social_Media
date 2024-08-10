@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import FacebokLogin from '../Components/FacebokLogin';
 import { useDispatch } from 'react-redux';
 import { signInSuccess } from '../redux/user/userSlice';
+import { deployUrl } from '../deployment';
 
 
 const Login = () => {
@@ -22,7 +23,7 @@ const Login = () => {
     }
 
     const login = async () => {
-        const response = await fetch('http://localhost:4000/auth/login',
+        const response = await fetch(`${deployUrl}/auth/login`,
             {
                 method: "POST",
                 headers: {
