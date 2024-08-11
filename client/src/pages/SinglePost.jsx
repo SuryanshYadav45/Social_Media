@@ -18,6 +18,7 @@ const SinglePost = () => {
   const [isLikedByCurrentUser, setIsLikedByCurrentUser] = useState();
   const [likecount, setlikecount] = useState();
   const [postComment, setpostComment] = useState([]);
+  const[commentLoader,setcommentLoader]=useState(false)
   const { postid } = useParams();
   useEffect(() => {
     const fetchpost = async () => {
@@ -59,6 +60,8 @@ const SinglePost = () => {
 
   const likePost = async () => {
     try {
+      setIsLikedByCurrentUser(true);
+      setlikecount((prevLikeCount) => prevLikeCount + 1);
       const response = await fetch(`${deployUrl}/post/likepost`, {
         method: "POST",
         headers: {
@@ -68,17 +71,20 @@ const SinglePost = () => {
         body: JSON.stringify({ postid: post._id }),
       });
 
-      if (response.status === 200) {
-        setIsLikedByCurrentUser(true);
-        setlikecount((prevLikeCount) => prevLikeCount + 1);
+      if (response.status !== 200) {
+        setIsLikedByCurrentUser(false);
+        setlikecount((prevLikeCount) => prevLikeCount - 1);
       }
     } catch (error) {
+      setIsLikedByCurrentUser(false);
       console.log(error);
     }
   };
 
   const dislikePost = async () => {
     try {
+      setIsLikedByCurrentUser(false);
+      setlikecount((prevLikeCount) => prevLikeCount - 1);
       const response = await fetch(`${deployUrl}/post/dislike`, {
         method: "POST",
         headers: {
@@ -88,17 +94,19 @@ const SinglePost = () => {
         body: JSON.stringify({ postid: post._id }),
       });
 
-      if (response.status === 200) {
-        setIsLikedByCurrentUser(false);
-        setlikecount((prevLikeCount) => prevLikeCount - 1);
+      if (response.status !== 200) {
+        setIsLikedByCurrentUser(true);
+        setlikecount((prevLikeCount) => prevLikeCount + 1);
       }
     } catch (error) {
+      setIsLikedByCurrentUser(true);
       console.log(error);
     }
   };
 
   const createComment = async () => {
     try {
+      setcommentLoader(true)
       const response = await fetch(`${deployUrl}/post/comment`, {
         method: "POST",
         headers: {
@@ -112,6 +120,7 @@ const SinglePost = () => {
       });
 
       if (response.status == 201) {
+        setcommentLoader(false)
         setcomment("");
         const data = await response.json();
         const commentobj = {
@@ -127,6 +136,7 @@ const SinglePost = () => {
         console.log(commentobj);
       }
     } catch (error) {
+      setcommentLoader(false)
       console.log(error);
     }
   };
@@ -200,7 +210,23 @@ const SinglePost = () => {
                     className=" mt-1 text-blue-500"
                     onClick={createComment}
                   >
-                    Post
+                    {commentLoader?(
+                <svg class="animate-spin h-5 w-5 mr-3 ..." viewBox="0 0 24 24">
+                  <circle
+                    className="opacity-[0]"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke-width="4"
+                  ></circle>
+                  <path
+                    className="opacity-100"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.416A7.96 7.96 0 014 12H0c0 6.627 5.373 12 12 12v-4c-3.313 0-6.055-2.09-7.097-5.002z"
+                  ></path>
+                </svg>
+              )
+              :"Post"}
                   </button>
                 )}
               </div>

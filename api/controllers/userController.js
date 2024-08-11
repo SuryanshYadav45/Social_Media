@@ -112,29 +112,51 @@ const getAllUsers = async (req, res) => {
 
 const getFriend = async (req, res) => {
   try {
-    const friends = await UserModel.find({
-      friends: { $in: [req.user.id] },
+    const usersWithMessages = await MessageModel.find({
+      $or: [
+        { sender: req.user.id },
+        { receiver: req.user.id }
+      ]
+    })
+    .distinct('sender') 
+    .then(senderIds =>
+      MessageModel.find({ receiver: req.user.id })
+      .distinct('sender')
+      .then(receiverIds => [...new Set([...senderIds, ...receiverIds])])
+    );
+
+    const filteredUserIds = usersWithMessages.filter(id => id.toString() !== req.user.id.toString());
+
+    
+    const users = await UserModel.find({
+      _id: { $in: filteredUserIds }
     }).select("username photoUrl fullname");
-    const friendsWithLatestMessage = await Promise.all(
-      friends.map(async (friend) => {
+
+    // Fetch latest message for each user
+    const usersWithLatestMessages = await Promise.all(
+      users.map(async (user) => {
         const latestMessage = await MessageModel.findOne({
           $or: [
-            { sender: req.user.id, receiver: friend._id },
-            { sender: friend._id, receiver: req.user.id },
-          ],
+            { sender: req.user.id, receiver: user._id },
+            { sender: user._id, receiver: req.user.id }
+          ]
         })
-          .sort({ timestamp: -1 })
-          .limit(1)
-          .select("content timestamp");
+        .sort({ timestamp: -1 })
+        .select("content timestamp");
 
         return {
-          ...friend._doc, // Use `_doc` to get the raw document data
+          ...user._doc, 
           latestMessage,
         };
       })
     );
-
-    res.status(200).json(friendsWithLatestMessage);
+    const sortedUsers = usersWithLatestMessages.sort((a, b) => {
+      const timestampA = a.latestMessage ? a.latestMessage.timestamp : new Date(0);
+      const timestampB = b.latestMessage ? b.latestMessage.timestamp : new Date(0); 
+      return timestampB - timestampA; 
+    });
+    res.status(200).json(sortedUsers);
+    
   } catch (error) {
     console.log(error);
     res.status(500).json({ mesage: "internal server error" });
