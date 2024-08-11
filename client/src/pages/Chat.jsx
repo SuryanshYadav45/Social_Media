@@ -144,7 +144,7 @@ const Chat = () => {
     }
   }, [socket]);
   return (
-    <div className=" flex bg-black ">
+    <div className=" flex bg-black h-screen">
       <div className="w-full bg-gray-100 smlg:w-[10%] fixed bottom-0 lap:w-[15%] ">
         <Navbar />
       </div>
@@ -167,7 +167,7 @@ const Chat = () => {
           <HiOutlineVideoCamera size={50}/>
         </div>
         <div
-          className="h-[80vh] overflow-y-scroll pb-8 mt-3"
+          className="h-[78vh] overflow-y-scroll pb-8 mt-3"
           ref={messageListRef}
         >
           <MessageList
@@ -177,7 +177,7 @@ const Chat = () => {
             dataSource={messages}
           />
         </div>
-        <div className="w-[100%] bottom-0 absolute">
+        <div className="w-[100%] bottom-3 absolute">
           <Input
             className=" bg-transparent w-full p-4 mr-4"
             placeholder="Type here..."
