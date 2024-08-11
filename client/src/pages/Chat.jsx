@@ -216,14 +216,13 @@ const Chat = () => {
             <div className="flex items-center ml-3 space-x-4">
             
       
-            {/* Placeholder for Paragraph */}
             <div className="flex-1">
               <Skeleton height={40}  className="w-full p-4 " baseColor="#d3d3d3 " highlightColor="#c0c0c0" />
 
             </div>
       
-            {/* Right Circle */}
-            <Skeleton className="ml-[-10px] mr-5"  height={40} width={45} baseColor="#d3d3d3" highlightColor="#c0c0c0" />
+            
+            <Skeleton className="ml-[-10px] mb-[4px] mr-5"  height={40} width={45} baseColor="#d3d3d3" highlightColor="#c0c0c0" />
           </div>
           ):<div className="w-[100%] bottom-0 pt-1 absolute">
           <Input
