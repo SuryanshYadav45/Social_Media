@@ -10,6 +10,8 @@ import { RiCloseLargeFill } from "react-icons/ri";
 import { app } from "../firebase";
 import { deployUrl } from "../deployment";
 import { signInSuccess, signOut } from '../redux/user/userSlice'
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const User = () => {
     const dispatch = useDispatch();
@@ -23,7 +25,7 @@ const User = () => {
     const user = useSelector((state) => state.user.user);
     const decodeUser = jwtDecode(user.usertoken);
     const [uploadProgress, setUploadProgress] = useState(null);
-    
+    const[IsLoading,setIsLoading]=useState(true)
 
 console.log(decodeUser)
     const [userData, setuserData] = useState([]);
@@ -52,7 +54,14 @@ console.log(decodeUser)
                 console.log(error);
             }
         };
-        fetchuser();
+
+        const fetchData = async () => {
+            setIsLoading(true); // Start loading
+            await fetchuser(); // Wait for all functions to complete
+            setIsLoading(false); // Set loading to false after all functions are done
+          };
+
+          fetchData()
         setFilePreview(decodeUser.photoUrl)
     }, [id]);
 
@@ -141,8 +150,33 @@ console.log(decodeUser)
                 <Navbar />
             </div>
 
-            <div className="  w-full min-h-screen  text-white bg-black smlg:w-[90%] smlg:ml-[10%] lap:w-[90%] lap:ml-[15%] ">
-                <div className="flex w-full justify-center mt-6 ">
+            {
+                IsLoading?
+
+                <div className="  w-full min-h-screen  text-white bg-black smlg:w-[90%] smlg:ml-[10%] lap:w-[90%] lap:ml-[15%] ">
+                    <div className="flex w-full justify-center mt-6 ">
+                    <Skeleton  height={80} className="rounded-full" width={80} baseColor="#d3d3d3" highlightColor="#c0c0c0" />
+                    <div className="flex flex-col">
+                        <div className="mb-3 flex flex-col justify-between smlg:w-[330px]">
+                        <Skeleton  height={30} className="ml-5 w-[180px]"  baseColor="#d3d3d3" highlightColor="#c0c0c0" />
+                        <Skeleton  height={30} className="ml-5 w-[180px]"  baseColor="#d3d3d3" highlightColor="#c0c0c0" />
+                        <Skeleton  height={30} className="ml-5 w-[180px]"  baseColor="#d3d3d3" highlightColor="#c0c0c0" />
+                        <Skeleton  height={30} className="ml-5 w-[120px]"  baseColor="#d3d3d3" highlightColor="#c0c0c0" />
+                        </div>
+                        <div className="flex mb-2"></div>
+                    </div>
+                    </div>
+                <Skeleton  height={30} className=" ml-[45%] mt-3" width={90} baseColor="#d3d3d3" highlightColor="#c0c0c0" />
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 p-4  w-[80%] mx-auto place-items-center">
+                <Skeleton   className="h-[350px] w-[150px] "  baseColor="#d3d3d3" highlightColor="#c0c0c0" />
+                <Skeleton   className="h-[350px] w-[150px] ml-5" baseColor="#d3d3d3" highlightColor="#c0c0c0" />
+                </div>
+                </div>
+                :
+                <div className="  w-full min-h-screen  text-white bg-black smlg:w-[90%] smlg:ml-[10%] lap:w-[90%] lap:ml-[15%] ">
+                
+                    
+                    <div className="flex w-full justify-center mt-6 ">
                     <img
                         src={userData.photoUrl}
                         className="w-[100px] h-[100px] smlg:w-[130px] smlg:h-[130px] rounded-full mr-7"
@@ -201,7 +235,7 @@ console.log(decodeUser)
                         ))}
                     </div>
                 )}
-            </div>
+            </div>}
             {updateProfile&&<div className="absolute flex justify-center items-center  backdrop-blur-[6px] bg-transparent w-full h-screen">
                 <div className="w-[80%] relative bg-black p-6 flex flex-col   rounded-2xl shadow-sm shadow-gray-500">
                     <RiCloseLargeFill color="white" size={25} onClick={() => setupdateProfile(false)} className="absolute right-3 cursor-pointer" />
