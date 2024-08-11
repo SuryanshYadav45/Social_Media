@@ -144,7 +144,7 @@ const Chat = () => {
     }
   }, [socket]);
   return (
-    <div className=" flex bg-black ">
+    <div className=" flex bg-black h-screen">
       <div className="w-full bg-gray-100 smlg:w-[10%] fixed bottom-0 lap:w-[15%] ">
         <Navbar />
       </div>
@@ -154,7 +154,7 @@ const Chat = () => {
           <ChatProfile key={account._id} data={account} />
         ))}
       </div>
-      <div className="relative w-full mt-8 h-[90vh]  text-white bg-black smlg:h-screen smlg:mt-0 smlg:w-[90%] lap:w-[60%] ">
+      <div className="relative w-full mt-4 h-[92vh]  text-white bg-black smlg:h-screen smlg:mt-0 smlg:w-[90%] lap:w-[60%] ">
         <div className="bg-black h-[70px] border-b border-[#2c2c2d] flex justify-between items-center p-5">
           <div className="flex items-center cursor-pointer" onClick={()=>navigate(`/user/${OtherUser._id}`)}>
             <img
@@ -167,7 +167,7 @@ const Chat = () => {
           <HiOutlineVideoCamera size={50}/>
         </div>
         <div
-          className="h-[72vh] smlg:h-[75vh]  overflow-y-scroll pb-8 mt-3"
+          className="h-[74vh] smlg:h-[75vh]  overflow-y-scroll pb-8 mt-3"
           ref={messageListRef}
         >
           <MessageList
