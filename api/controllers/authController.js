@@ -25,9 +25,9 @@ const login = async (req, res) => {
                 const token = jwt.sign(
                     { id: user._id, username: user.username,fullname:user.fullname, photoUrl: user.photoUrl, email: user.email },
                     process.env.TOKEN_SECRET,
-                    { expiresIn: '1h' }
+                    { expiresIn: '1d' }
                   );
-                const TokenExp = new Date(Date.now() + 50 * 60 * 1000);//50 minutes
+                  const TokenExp = new Date(Date.now() + 24 * 60 * 60 * 1000);//50 minutes
                 user.usertoken=token;
                 user.tokenExpiration=TokenExp ;
                 await user.save(); 

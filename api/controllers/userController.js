@@ -195,9 +195,9 @@ const updateUser = async (req, res) => {
     const token = jwt.sign(
       { id: user._id, username: user.username,fullname:user.fullname, photoUrl: user.photoUrl, email: user.email },
       process.env.TOKEN_SECRET,
-      { expiresIn: '1h' }
+      { expiresIn: '1d' }
     );
-    const TokenExp = new Date(Date.now() + 50 * 60 * 1000);
+    const TokenExp = new Date(Date.now() + 24 * 60 * 60 * 1000);
     res.status(201).json({"usertoken":token,"expiration":TokenExp});
   } catch (error) {
     console.log(error);
