@@ -25,7 +25,7 @@ const User = () => {
     const [uploadProgress, setUploadProgress] = useState(null);
     
 
-
+console.log(decodeUser)
     const [userData, setuserData] = useState([]);
     const [userPost, setuserPost] = useState([]);
     useEffect(() => {
@@ -145,24 +145,24 @@ const User = () => {
                 <div className="flex w-full justify-center mt-6 ">
                     <img
                         src={userData.photoUrl}
-                        className="w-[130px] h-[130px] rounded-full mr-7"
+                        className="w-[100px] h-[100px] smlg:w-[130px] smlg:h-[130px] rounded-full mr-7"
                         alt=""
                     />
 
                     <div className="flex flex-col">
                         <div className="mb-3 flex justify-between smlg:w-[330px]">
-                            <span className="text-[25px]">{userData?.username}</span>
+                            <span className="text-[20px] smlg:text-[25px]">{userData?.username}</span>
 
                             {userData._id === decodeUser.id ? (
-                                <button className="bg-[#363636] rounded-md ml-2 mt-[1px] text-white w-[80px] h-[35px]" onClick={()=>setupdateProfile(true)}>
+                                <button className="bg-[#363636] rounded-md ml-2 text-[12px] smlg:text-[17px] mt-[1px] text-white w-[60px] h-[30px] smlg:w-[120px] smlg:h-[35px] " onClick={()=>setupdateProfile(true)}>
                                     Edit Profile
                                 </button>
                             ) : (
                                 <>
-                                    <button className="bg-[#363636] text-white rounded-md w-[80px] h-[35px]">
+                                    <button className="bg-[#363636] text-white text-[11px] ml-1 smlg:text-[16px] rounded-md w-[60px] h-[30px] smlg:w-[80px] smlg:h-[35px]">
                                         Following
                                     </button>
-                                    <button className="bg-[#363636] text-white rounded-md w-[80px] h-[35px]">
+                                    <button className="bg-[#363636] text-white text-[11px] ml-1 rounded-md smlg:text-[16px] w-[60px] h-[30px] smlg:w-[80px] smlg:h-[35px]">
                                         Message
                                     </button>
                                 </>
@@ -175,7 +175,7 @@ const User = () => {
                             </p>
                         </div>
                         <h3>{userData.fullname}</h3>
-                        <button onClick={logout} className='bg-[#363636] w-[130px] rounded-lg h-[30px] mt-3 text-white'>Logout</button>
+                        {decodeUser.id===id&&<button onClick={logout} className='bg-[#363636] w-[130px] rounded-lg h-[30px] mt-3 text-white'>Logout</button>}
                     </div>
                 </div>
                 <div className="w-[80%] h-[1px] bg-[#2c2c2d] mx-auto mt-5"></div>
