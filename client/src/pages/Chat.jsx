@@ -43,6 +43,7 @@ const Chat = () => {
 
       if (response.status === 200) {
         const data = await response.json();
+        console.log(data)
         setAccount(data);
       }
     };
@@ -62,12 +63,33 @@ const Chat = () => {
         if (response.status === 200) {
           const data = await response.json();
           console.log(data);
-          const formattedMessages = data.map((message) => ({
-            position: message?.sender?._id === decodeUser.id ? "right" : "left",
-            type: "text",
-            text: message?.content,
-            date: new Date(message.timestamp),
-          }));
+          // const formattedMessages = data.map((message) => ({
+            
+          //   position: message?.sender?._id === decodeUser.id ? "right" : "left",
+          //   type: "text",
+          //   text: message?.content,
+          //   date: new Date(message.timestamp),
+          // }));
+          const formattedMessages = data.map((message) => {
+            // Handle messages based on their type
+            if (message.type === 'post') {
+              return {
+                position: message.sender._id === decodeUser.id ? "right" : "left",
+                type: "photo",
+                 data: {uri:message.content.imageUrl},
+                date: new Date(message.timestamp),
+                
+              };
+            } else {
+              
+              return {
+                position: message.sender._id === decodeUser.id ? "right" : "left",
+                type: "text",
+                text: message.content,
+                date: new Date(message.timestamp),
+              };
+            }
+          });
 
           console.log(formattedMessages);
           setMessages(formattedMessages);

@@ -1,4 +1,5 @@
 const MessageModel=require('./model/MessageModel.js')
+const PostModel=require('./model/PostModel.js')
 const { Server } = require("socket.io");
 
 let io;
@@ -46,6 +47,36 @@ const initializeSocket = (server) => {
                 });
             }
         });
+
+        socket.on('sharePost',async (data)=>
+        {
+            
+            const{postId,recipientId,senderId}=data;
+            const post = await PostModel.findById({_id:postId});
+            
+            const message = {
+                sender: senderId,
+                receiver: recipientId,
+                type: 'post',
+                content: {
+                  title: post.caption,
+                  imageUrl: post.imageurls[0],
+                },
+                timestamp: new Date(),
+              };
+             
+              await MessageModel.create(message);
+            //   const receiverSocketId = userSocketMap.get(receiverId);
+            //   if (receiverSocketId) {
+            //     io.to(receiverSocketId).emit('new_message', {
+            //         senderId,
+            //         content,
+            //         timestamp: message.timestamp
+            //     });
+            // }
+            console.log("Data reciever in socket= ",message)
+        }
+        )
 
         socket.on('disconnect', () => {
             console.log(`User disconnected`);

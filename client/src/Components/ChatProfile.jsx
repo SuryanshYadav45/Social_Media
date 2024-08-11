@@ -12,9 +12,13 @@ const ChatProfile = ({ data }) => {
     return words.slice(0, maxWords).join(' ') + ' ...'; // Truncate and append ellipsis
 };
   useEffect(() => {
-    if (data?.latestMessage?.content != null) {
+    if (data?.latestMessage?.content != null && data?.latestMessage?.content?.imageUrl) {
+      setmessage("Shared a Post");
+    } else if (data?.latestMessage?.content != null ) {
       setmessage(truncateMessage(data.latestMessage.content,7));
-    } else {
+      
+    }
+    else{
       setmessage("Start Conversation!!");
     }
   }, [data]);

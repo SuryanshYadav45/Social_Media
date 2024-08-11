@@ -27,7 +27,7 @@ const User = () => {
     const [uploadProgress, setUploadProgress] = useState(null);
     const[IsLoading,setIsLoading]=useState(true)
 
-console.log(decodeUser)
+
     const [userData, setuserData] = useState([]);
     const [userPost, setuserPost] = useState([]);
     useEffect(() => {
