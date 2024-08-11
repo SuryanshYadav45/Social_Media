@@ -95,7 +95,7 @@ const Navbar = ({ user }) => {
                     <RiNotification2Fill className='' size={32}  />
                 </div>
                 <div className=' h-[40px] flex items-center ' onClick={() => navigate('/createpost')}>
-                    <MdAddCircle className='' size={32} />
+                    <MdAddCircle className='' size={38} />
                 </div>
                 <div className=' h-[40px] flex items-center ' onClick={()=>navigate(`/user/${currentUser?.id}`)}>
                     <div className='w-[40px] h-[40px]  overflow-hidden'>

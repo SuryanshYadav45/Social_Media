@@ -77,7 +77,7 @@ const Inbox = () => {
         <Navbar />
       </div>
 
-      <div className="relative w-[25%] h-screen  text-white bg-black smlg:w-[90%] smlg:ml-[10%] lap:w-[25%] lap:ml-[15%] overflow-y-scroll">
+      <div className="relative w-[18%] h-screen  text-white border-r-2 border-[#19191A] bg-black smlg:w-[90%] smlg:ml-[10%] lap:w-[25%] lap:ml-[15%] overflow-y-scroll">
         {Account?.map((account) => (
           <ChatProfile key={account._id} data={account} />
         ))}
