@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { jwtDecode } from "jwt-decode";
 import { Navigate, useNavigate, useNavigation } from "react-router-dom";
 import { deployUrl } from "../deployment";
+import Spinner from "../Components/Spinner";
 const Inbox = () => {
   const user = useSelector((state) => state.user.user);
   const [searchChat, setsearchChat] = useState(false);
@@ -15,6 +16,8 @@ const Inbox = () => {
   const [results, setResults] = useState([]);
   const decodeUser = jwtDecode(user.usertoken);
   const navigate=useNavigate()
+
+  const [IsLoading,setIsLoading]=useState(true)
 
   useEffect(() => {
     if (decodeUser) {
@@ -36,7 +39,15 @@ const Inbox = () => {
       }
     };
 
-    fetchUser();
+    const fetchData = async () => {
+      setIsLoading(true); // Start loading
+      await fetchUser(); // Wait for all functions to complete
+      setIsLoading(false); // Set loading to false after all functions are done
+    };
+
+    fetchData()
+
+    
   }, []);
 
   useEffect(() => {
@@ -77,6 +88,12 @@ const Inbox = () => {
         <Navbar />
       </div>
 
+{IsLoading?
+      <div className="w-[100%] smlg:ml-[10%] lap:ml-[15%]  h-screen bg-black flex justify-center items-center">
+          <Spinner />
+        </div>:
+
+<>
       <div className="relative w-[18%] h-screen  text-white border-r-2 border-[#19191A] bg-black smlg:w-[90%] smlg:ml-[10%] lap:w-[25%] lap:ml-[15%] overflow-y-scroll">
         {Account?.map((account) => (
           <ChatProfile key={account._id} data={account} />
@@ -144,6 +161,7 @@ const Inbox = () => {
           </>
         )}
       </div>
+      </>}
     </div>
   );
 };

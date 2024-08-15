@@ -11,6 +11,7 @@ import { HiOutlineVideoCamera } from "react-icons/hi2";
 import { deployUrl } from "../deployment";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import Spinner from "../Components/Spinner";
 
 const Chat = () => {
   let { id } = useParams();
@@ -43,7 +44,7 @@ const Chat = () => {
 
       if (response.status === 200) {
         const data = await response.json();
-        console.log(data)
+        
         setAccount(data);
       }
     };
@@ -62,14 +63,7 @@ const Chat = () => {
         );
         if (response.status === 200) {
           const data = await response.json();
-          console.log(data);
-          // const formattedMessages = data.map((message) => ({
-            
-          //   position: message?.sender?._id === decodeUser.id ? "right" : "left",
-          //   type: "text",
-          //   text: message?.content,
-          //   date: new Date(message.timestamp),
-          // }));
+          
           const formattedMessages = data.map((message) => {
             // Handle messages based on their type
             if (message.type === 'post') {
@@ -91,7 +85,6 @@ const Chat = () => {
             }
           });
 
-          console.log(formattedMessages);
           setMessages(formattedMessages);
         }
       } catch (error) {
@@ -121,12 +114,10 @@ const Chat = () => {
       setIsLoading(false); // Set loading to false after all functions are done
     };
     fetchData();
-    //  fetchfriend();
-    // fetchchat();
-    // fetchUser();
+    
   }, [id]);
 
-  console.log(messages);
+
 
   const scrollToBottom = () => {
     if (messageListRef.current) {
@@ -159,7 +150,7 @@ const Chat = () => {
   useEffect(() => {
     if (socket) {
       socket.on("new_message", (data) => {
-        console.log("message", data);
+        
         const newmessage = {
           position: "left",
           type: "text",
@@ -175,36 +166,19 @@ const Chat = () => {
       <div className="w-full bg-gray-100 smlg:w-[10%] fixed bottom-0 lap:w-[15%] ">
         <Navbar />
       </div>
-
+{isLoading?<div className="w-[100%] smlg:ml-[10%] lap:ml-[15%]  h-screen bg-black flex justify-center items-center">
+          <Spinner />
+        </div>:<>
       <div className="relative w-[25%] h-screen hidden border-r-2 border-[#19191A] text-white smlg:block bg-black smlg:w-[30%] smlg:ml-[10%] lap:w-[25%] lap:ml-[15%] overflow-y-scroll">
-        {isLoading ? (
-          <Skeleton
-            count={5}
-            height={60}
-            baseColor="#d3d3d3"
-            highlightColor="#c0c0c0"
-          />
-        ) : (
+       
+          {
           Account?.map((account) => (
             <ChatProfile key={account._id} data={account} />
           ))
-        )}
+        }
       </div>
       <div className="relative w-full mt-4 h-[92vh]  text-white bg-black smlg:h-screen smlg:mt-0 smlg:w-[90%] lap:w-[60%] ">
-        {isLoading ? (
-          <div className="flex items-center ml-3 space-x-4">
-          {/* Left Circle */}
-          <Skeleton  height={60} className="rounded-full" width={60} baseColor="#d3d3d3" highlightColor="#c0c0c0" />
-    
-          {/* Placeholder for Paragraph */}
-          <div className="flex-1">
-            <Skeleton height={20} width={80} baseColor="#d3d3d3" highlightColor="#c0c0c0" />
-          </div>
-    
-          {/* Right Circle */}
-          <Skeleton className="mr-3 rounded-full"   height={60} width={60} baseColor="#d3d3d3" highlightColor="#c0c0c0" />
-        </div>
-        ) : (
+        
           <div className="bg-black h-[70px] border-b border-[#2c2c2d] flex justify-between items-center p-5">
             <div
               className="flex items-center cursor-pointer"
@@ -219,7 +193,7 @@ const Chat = () => {
             </div>
             <HiOutlineVideoCamera size={50} />
           </div>
-        )}
+        
 
         <div
           className="h-[74vh] smlg:h-[75vh]  overflow-y-scroll pb-8 mt-3"
@@ -233,20 +207,7 @@ const Chat = () => {
           />
         </div>
 
-        {
-          isLoading?(
-            <div className="flex items-center ml-3 space-x-4">
-            
-      
-            <div className="flex-1">
-              <Skeleton height={40}  className="w-full p-4 " baseColor="#d3d3d3 " highlightColor="#c0c0c0" />
-
-            </div>
-      
-            
-            <Skeleton className="ml-[-10px] mb-[4px] mr-5"  height={40} width={45} baseColor="#d3d3d3" highlightColor="#c0c0c0" />
-          </div>
-          ):<div className="w-[100%] bottom-0 pt-1 absolute">
+        <div className="w-[100%] bottom-0 pt-1 absolute">
           <Input
             className=" bg-transparent w-full p-4 mr-4"
             placeholder="Type here..."
@@ -266,10 +227,11 @@ const Chat = () => {
           />
         </div>
 
-        }
+        
 
         
       </div>
+      </>}
     </div>
   );
 };

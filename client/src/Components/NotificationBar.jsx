@@ -6,7 +6,6 @@ import { deployUrl } from '../deployment'
 const NotificationBar = ({data}) => {
   const user=useSelector((state)=>state.user.user)
   const navigate=useNavigate()
-  console.log(data)
   const acceptRequest= async()=>
   {
     try {
@@ -20,13 +19,13 @@ const NotificationBar = ({data}) => {
       if(response.status===200)
       {
         settext("Following")
-        console.log("friend added successfully")
+        // console.log("friend added successfully")
       }
     } catch (error) {
       console.log(error)
     }
   }
-  console.log(data)
+  // console.log(data)
   return (<>
     <div className='bg-black border-t mt-3 border-b border-[#5e5e6455] h-[60px] flex items-center justify-center cursor-pointer'  onClick={()=>navigate(`/p/${data.post}`)}>
         <img className='rounded-full w-[50px] h-[50px] object-cover' src={data.senderphoto} alt="Profile" />

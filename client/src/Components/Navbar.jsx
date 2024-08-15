@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { jwtDecode } from 'jwt-decode';
 import { useSocket } from '../socketContext';
+import { FiInstagram } from "react-icons/fi";
+
 
 const Navbar = ({ user }) => {
     const navigate = useNavigate()
@@ -47,7 +49,7 @@ const Navbar = ({ user }) => {
         <>
             <div className='w-full bg-black min-h-[100vh] hidden smlg:block text-white  border-r-0.5 border-[#2c2c2d]'>
                 <h3 className='pt-10 ml-7 text-[30px] italic hidden lap:block'>Instagram</h3>
-                <h3 className='pt-10 ml-7 text-[30px] italic lap:hidden'>I</h3>
+                <h3 className='pt-10 ml-6 text-[30px] italic lap:hidden'> <FiInstagram/> </h3>
                 <div className=' h-[50px] flex items-center ml-3 mt-10 cursor-pointer hover:bg-[#161617] rounded-md' onClick={()=>navigate('/')}>
                     <GoHomeFill className='ml-3' size={32} />
                     <span className='text-[20px] ml-4 hidden lap:block'>Home</span>

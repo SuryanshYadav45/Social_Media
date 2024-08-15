@@ -97,7 +97,7 @@ const Post = ({ data, currentuser }) => {
       if (response.status == 201) {
         setcommentLoader(false);
         setcomment("");
-        console.log("comment addded successfully");
+        // console.log("comment addded successfully");
         setcommentcount((prevcommentcount) => prevcommentcount + 1);
       }
     } catch (error) {
@@ -132,7 +132,7 @@ const Post = ({ data, currentuser }) => {
         },
       });
       if (response.status === 200) {
-        console.log(await response.json());
+        // console.log(await response.json());
       }
     } catch (error) {
       setsavepost(true);
@@ -181,7 +181,7 @@ const Post = ({ data, currentuser }) => {
 
 
   return (
-    <div className="w-[370px] smlg:w-[450px] mt-5 relative">
+    <div className="w-[370px]  smlg:w-[450px] mt-5 relative ">
       <div className="flex mb-3">
         <div className="w-[45px] h-[45px]">
           <div className=" w-[45px] h-[45px] rounded-full inset-0 bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 p-[2px]">
