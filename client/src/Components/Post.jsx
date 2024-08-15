@@ -14,12 +14,13 @@ import { IoClose } from "react-icons/io5";
 import { useSocket } from "../socketContext.jsx";
 import { jwtDecode } from "jwt-decode";
 const Post = ({ data, currentuser }) => {
-    const cuser = useSelector((state) => state.user.user);
-    const decodeUser = jwtDecode(cuser.usertoken);
-    const socket = useSocket();
-    const [isLikedByCurrentUser, setIsLikedByCurrentUser] = useState(
-         data.likes.includes(currentuser?.id)
-        );
+  // console.log(data)
+  const cuser = useSelector((state) => state.user.user);
+  const decodeUser = jwtDecode(cuser.usertoken);
+  const socket = useSocket();
+  const [isLikedByCurrentUser, setIsLikedByCurrentUser] = useState(
+    data.likes.includes(currentuser?.id)
+  );
   const [comment, setcomment] = useState("");
   const [likecount, setlikecount] = useState(data.likes.length);
   const [commentcount, setcommentcount] = useState(data.comments.length);
@@ -31,8 +32,21 @@ const Post = ({ data, currentuser }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const timeAgo = formatTimeAgo(data.createdAt);
   const [results, setResults] = useState([]);
-  const [reciever,setreciever]=useState()
+  const [reciever, setreciever] = useState();
   const [currentUser, setcurrentUser] = useState();
+  const [isAuthor,setisAuthor]=useState(false)
+  const [Option, setOption] = useState(false);
+
+  
+  
+  useEffect(() => {
+    // Check if the current user is the author
+    if (data?.userId?._id === currentuser.id) {
+      setisAuthor(true);
+    } else {
+      setisAuthor(false);
+    }
+  }, [data, currentuser]);
 
   const likePost = async () => {
     try {
@@ -157,12 +171,10 @@ const Post = ({ data, currentuser }) => {
             const data = await response.json();
             setResults(data);
           }
-          if(response.status==404)
-          {
+          if (response.status == 404) {
             setResults([]);
           }
         } catch (error) {
-          
           console.log(error);
         }
       }
@@ -171,17 +183,56 @@ const Post = ({ data, currentuser }) => {
     return () => clearTimeout(delayDebounceFn);
   }, [searchTerm]);
 
-//   console.log("post",data)
-  const handlesendpost=async()=>
-  {
-   
-     socket.emit('sharePost', { postId:data._id, senderId:decodeUser.id,recipientId: reciever });
-     setsearchUser(false)
-  }
+  //   console.log("post",data)
+  const handlesendpost = async () => {
+    socket.emit("sharePost", {
+      postId: data._id,
+      senderId: decodeUser.id,
+      recipientId: reciever,
+    });
+    setsearchUser(false);
+  };
 
+  const handleDelete=async()=>
+  {
+    try {
+      const response= fetch( `${deployUrl}/post/deletepost/${data._id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${user.usertoken}`,
+          },
+        });
+
+        if(response.status===200)
+        {
+          setOption(false)
+          window.location.reload();
+        }
+      
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <div className="w-[370px]  smlg:w-[450px] mt-5 relative ">
+      {Option && (
+        <div className="absolute rounded-lg top-[10%] right-[2%] smlg:right-[10%]  w-[350px] h-[300px] bg-[#19191a]">
+          
+          <div className="mt-[15px] text-white flex flex-col justify-center items-center">
+            {isAuthor &&<p onClick={handleDelete} className="border-b border-[#2c2c2e] w-full p-2 text-center cursor-pointer">Delete Post</p>}
+            <p onClick={() => setOption(false)} className="border-b border-[#2c2c2e] w-full p-2 text-center cursor-pointer">About this account</p>
+            <p onClick={() => setOption(false)} className="border-b border-[#2c2c2e] w-full p-2 text-center cursor-pointer">Copy link</p>
+            <p onClick={() => setOption(false)} className="border-b border-[#2c2c2e] w-full p-2 text-center cursor-pointer">Share to</p>
+            <p onClick={() => setOption(false)} className="border-b border-[#2c2c2e] w-full p-2 text-center cursor-pointer">Save post</p>
+            <p onClick={() => setOption(false)} className="border-b text-red-600 border-[#2c2c2e] w-full p-2 text-center cursor-pointer">Cancel</p>
+
+          </div>
+        </div>
+      )}
+
       <div className="flex mb-3">
         <div className="w-[45px] h-[45px]">
           <div className=" w-[45px] h-[45px] rounded-full inset-0 bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 p-[2px]">
@@ -198,7 +249,11 @@ const Post = ({ data, currentuser }) => {
           <span className="ml-1">• {timeAgo}</span>
         </div>
         <div className="ml-auto flex justify-center items-center text-white">
-          <BsThreeDots className="mt-2" size={25} />
+          <BsThreeDots
+            className="mt-2 cursor-pointer"
+            onClick={() => setOption(true)}
+            size={25}
+          />
         </div>
       </div>
       <div>
@@ -221,7 +276,11 @@ const Post = ({ data, currentuser }) => {
             onClick={() => navigate(`/p/${data._id}`)}
             className="ml-2 cursor-pointer "
           />
-          <LuSendHorizonal onClick={()=>setsearchUser(true)} size={30} className="ml-2 cursor-pointer" />
+          <LuSendHorizonal
+            onClick={() => setsearchUser(true)}
+            size={30}
+            className="ml-2 cursor-pointer"
+          />
         </div>
         <div>
           {savedpost ? (
@@ -285,41 +344,56 @@ const Post = ({ data, currentuser }) => {
         )}
       </div>
 
-      {searchUser&&<div className=" w-[100%] smlg:w-[500px] absolute  top-48 p-5 rounded-lg text-white bg-[#19191A]">
-        <div className="relative">
-          <h3 className="text-[25px] text-center">Share post</h3>
-          <IoClose
-            onClick={() => setsearchUser(false)}
-            size={30}
-            className="absolute cursor-pointer right-0 top-1"
-          />
-        </div>
-        <div className="flex mt-4 h-[40px] justify-center items-center">
-          To:{" "}
-          <input
-            type="Search"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full h-full bg-transparent outline-none ml-2"
-            name=""
-            id=""
-          />
-        </div>
-        <div>
-          {results.length <= 0
-                ? "No user found"
-                : results.map((result) => <div key={result._id} onClick={()=>setreciever(result._id)} className="flex rounded-md mt-1 mb-1 p-1 cursor-pointer hover:bg-[#2c2c2d]">
-                  <img src={result.photoUrl} alt="" className="w-[50px] h-[50px] rounded-full"/>
-                  <div className="ml-2">
-                    <h6>{result.fullname}</h6>
-                    <h6>{result.username}</h6>
+      {searchUser && (
+        <div className=" w-[100%] smlg:w-[500px] absolute  top-48 p-5 rounded-lg text-white bg-[#19191A]">
+          <div className="relative">
+            <h3 className="text-[25px] text-center">Share post</h3>
+            <IoClose
+              onClick={() => setsearchUser(false)}
+              size={30}
+              className="absolute cursor-pointer right-0 top-1"
+            />
+          </div>
+          <div className="flex mt-4 h-[40px] justify-center items-center">
+            To:{" "}
+            <input
+              type="Search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full h-full bg-transparent outline-none ml-2"
+              name=""
+              id=""
+            />
+          </div>
+          <div>
+            {results.length <= 0
+              ? "No user found"
+              : results.map((result) => (
+                  <div
+                    key={result._id}
+                    onClick={() => setreciever(result._id)}
+                    className="flex rounded-md mt-1 mb-1 p-1 cursor-pointer hover:bg-[#2c2c2d]"
+                  >
+                    <img
+                      src={result.photoUrl}
+                      alt=""
+                      className="w-[50px] h-[50px] rounded-full"
+                    />
+                    <div className="ml-2">
+                      <h6>{result.fullname}</h6>
+                      <h6>{result.username}</h6>
+                    </div>
                   </div>
-                </div>)}
+                ))}
+          </div>
+          <button
+            className="w-full bg-[#0095F6] text-white h-[35px] rounded-md mt-5 outline-none"
+            onClick={handlesendpost}
+          >
+            share
+          </button>
         </div>
-        <button className="w-full bg-[#0095F6] text-white h-[35px] rounded-md mt-5 outline-none" onClick={handlesendpost}>
-          share
-        </button>
-      </div>}
+      )}
     </div>
   );
 };

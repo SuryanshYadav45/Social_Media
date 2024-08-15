@@ -44,7 +44,7 @@ const Chat = () => {
 
       if (response.status === 200) {
         const data = await response.json();
-        
+
         setAccount(data);
       }
     };
@@ -63,21 +63,21 @@ const Chat = () => {
         );
         if (response.status === 200) {
           const data = await response.json();
-          
+
           const formattedMessages = data.map((message) => {
             // Handle messages based on their type
-            if (message.type === 'post') {
+            if (message.type === "post") {
               return {
-                position: message.sender._id === decodeUser.id ? "right" : "left",
+                position:
+                  message.sender._id === decodeUser.id ? "right" : "left",
                 type: "photo",
-                 data: {uri:message.content.imageUrl},
+                data: { uri: message.content.imageUrl },
                 date: new Date(message.timestamp),
-                
               };
             } else {
-              
               return {
-                position: message.sender._id === decodeUser.id ? "right" : "left",
+                position:
+                  message.sender._id === decodeUser.id ? "right" : "left",
                 type: "text",
                 text: message.content,
                 date: new Date(message.timestamp),
@@ -114,10 +114,7 @@ const Chat = () => {
       setIsLoading(false); // Set loading to false after all functions are done
     };
     fetchData();
-    
   }, [id]);
-
-
 
   const scrollToBottom = () => {
     if (messageListRef.current) {
@@ -125,9 +122,11 @@ const Chat = () => {
     }
   };
   useEffect(() => {
-    // Scroll to the bottom whenever messages change
+    if (!isLoading) {
+      scrollToBottom();
+    }
     scrollToBottom();
-  }, [messages]);
+  }, [messages, isLoading]);
 
   const handleSend = () => {
     if (inputValue.trim()) {
@@ -150,7 +149,6 @@ const Chat = () => {
   useEffect(() => {
     if (socket) {
       socket.on("new_message", (data) => {
-        
         const newmessage = {
           position: "left",
           type: "text",
@@ -166,72 +164,67 @@ const Chat = () => {
       <div className="w-full bg-gray-100 smlg:w-[10%] fixed bottom-0 lap:w-[15%] ">
         <Navbar />
       </div>
-{isLoading?<div className="w-[100%] smlg:ml-[10%] lap:ml-[15%]  h-screen bg-black flex justify-center items-center">
+      {isLoading ? (
+        <div className="w-[100%] smlg:ml-[10%] lap:ml-[15%]  h-screen bg-black flex justify-center items-center">
           <Spinner />
-        </div>:<>
-      <div className="relative w-[25%] h-screen hidden border-r-2 border-[#19191A] text-white smlg:block bg-black smlg:w-[30%] smlg:ml-[10%] lap:w-[25%] lap:ml-[15%] overflow-y-scroll">
-       
-          {
-          Account?.map((account) => (
-            <ChatProfile key={account._id} data={account} />
-          ))
-        }
-      </div>
-      <div className="relative w-full mt-4 h-[92vh]  text-white bg-black smlg:h-screen smlg:mt-0 smlg:w-[90%] lap:w-[60%] ">
-        
-          <div className="bg-black h-[70px] border-b border-[#2c2c2d] flex justify-between items-center p-5">
-            <div
-              className="flex items-center cursor-pointer"
-              onClick={() => navigate(`/user/${OtherUser._id}`)}
-            >
-              <img
-                src={OtherUser.photoUrl}
-                className="w-[55px] h-[55px] rounded-full"
-                alt=""
-              />
-              <h2 className="ml-3">{OtherUser.fullname}</h2>
-            </div>
-            <HiOutlineVideoCamera size={50} />
+        </div>
+      ) : (
+        <>
+          <div className="relative w-[25%] h-screen hidden border-r-2 border-[#19191A] text-white smlg:block bg-black smlg:w-[30%] smlg:ml-[10%] lap:w-[25%] lap:ml-[15%] overflow-y-scroll">
+            {Account?.map((account) => (
+              <ChatProfile key={account._id} data={account} />
+            ))}
           </div>
-        
-
-        <div
-          className="h-[74vh] smlg:h-[75vh]  overflow-y-scroll pb-8 mt-3"
-          ref={messageListRef}
-        >
-          <MessageList
-            className="message-list relative text-black "
-            lockable={true}
-            toBottomHeight={"100%"}
-            dataSource={messages}
-          />
-        </div>
-
-        <div className="w-[100%] bottom-0 pt-1 absolute">
-          <Input
-            className=" bg-transparent w-full p-4 mr-4"
-            placeholder="Type here..."
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyPress={(e) => {
-              if (e.key === "Enter") handleSend();
-            }}
-            rightButtons={
-              <button
-                onClick={handleSend}
-                className="bg-white text-black p-2 rounded-sm"
+          <div className="relative w-full mt-4 h-[92vh]  text-white bg-black smlg:h-screen smlg:mt-0 smlg:w-[90%] lap:w-[60%] ">
+            <div className="bg-black h-[70px] border-b border-[#2c2c2d] flex justify-between items-center p-5">
+              <div
+                className="flex items-center cursor-pointer"
+                onClick={() => navigate(`/user/${OtherUser._id}`)}
               >
-                Send
-              </button>
-            }
-          />
-        </div>
+                <img
+                  src={OtherUser.photoUrl}
+                  className="w-[55px] h-[55px] rounded-full"
+                  alt=""
+                />
+                <h2 className="ml-3">{OtherUser.fullname}</h2>
+              </div>
+              <HiOutlineVideoCamera size={50} />
+            </div>
 
-        
+            <div
+              className="h-[74vh] smlg:h-[75vh]  overflow-y-scroll pb-8 mt-3"
+              ref={messageListRef}
+            >
+              <MessageList
+                className="message-list relative text-black "
+                lockable={true}
+                toBottomHeight={"100%"}
+                dataSource={messages}
+              />
+            </div>
 
-        
-      </div>
-      </>}
+            <div className="w-[100%] bottom-0 pt-1 absolute">
+              <Input
+                className=" bg-transparent w-full p-4 mr-4"
+                placeholder="Type here..."
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") handleSend();
+                }}
+                rightButtons={
+                  <button
+                    onClick={handleSend}
+                    className="bg-white text-black p-2 rounded-sm"
+                  >
+                    Send
+                  </button>
+                }
+              />
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

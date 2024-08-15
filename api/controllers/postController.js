@@ -43,6 +43,7 @@ const deletePost = async (req, res) => {
     }
     await PostModel.findByIdAndDelete({ _id: postid });
     await CommentModel.deleteMany({ postId: postid });
+    res.status(200).json({message:"Success"})
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Internal server error" });
