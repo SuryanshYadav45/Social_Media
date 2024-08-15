@@ -12,7 +12,7 @@ import { deployUrl } from "../deployment";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import Spinner from "../Components/Spinner";
-
+import toast, { Toaster } from 'react-hot-toast'
 const Chat = () => {
   let { id } = useParams();
   const navigate = useNavigate();
@@ -161,6 +161,7 @@ const Chat = () => {
   }, [socket]);
   return (
     <div className=" flex bg-black h-screen">
+      <Toaster />
       <div className="w-full bg-gray-100 smlg:w-[10%] fixed bottom-0 lap:w-[15%] ">
         <Navbar />
       </div>
@@ -188,7 +189,7 @@ const Chat = () => {
                 />
                 <h2 className="ml-3">{OtherUser.fullname}</h2>
               </div>
-              <HiOutlineVideoCamera size={50} />
+              <HiOutlineVideoCamera size={50} className="cursor-pointer"  onClick={()=>toast("Hang tight — this feature is almost ready to make its debut!",{duration: 1500,})}/>
             </div>
 
             <div
